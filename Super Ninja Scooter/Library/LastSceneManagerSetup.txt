@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/TestDriveScene.unity
+- path: Assets/Scenes/UserInterface.unity
   isLoaded: 1
   isActive: 1
