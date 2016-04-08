@@ -14,6 +14,8 @@ public class BasicMovementScript : MonoBehaviour {
 
 	[SerializeField] Transform MoverNode;
 
+	[SerializeField] Animator m_Animator;
+
 	int m_TurnState = 0;
 
 	bool rev = false;
@@ -28,14 +30,15 @@ public class BasicMovementScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKey (KeyCode.A)) {
-			gameObject.transform.position = Vector3.Lerp(gameObject.transform.position,MoverNode.position,.5f);
-			MoverNode.transform.Translate (-MoveSpeed * Time.deltaTime, 0, 0);
+			gameObject.transform.Translate (-MoveSpeed * Time.deltaTime, 0, 0);
 			m_TurnState = -1;
+
 		}
 		if (Input.GetKey (KeyCode.D)) {
-			gameObject.transform.position = Vector3.Lerp(gameObject.transform.position,MoverNode.position,.5f);
-			MoverNode.transform.Translate (MoveSpeed * Time.deltaTime, 0, 0);
+			gameObject.transform.Translate (MoveSpeed * Time.deltaTime, 0, 0);
+
 			m_TurnState = 1;
+
 		}
 
 		if (Input.GetKey (KeyCode.W)) {
@@ -45,7 +48,21 @@ public class BasicMovementScript : MonoBehaviour {
 			}
 		}
 
+		if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)) {
+			if (m_TurnState == -1) {
+				m_Animator.SetTrigger ("TurnLeft");
+			} else {
+				m_Animator.SetTrigger ("TurnRight"); 
+			}
+		}
+
+		
 		if (Input.GetKeyUp (KeyCode.A) || Input.GetKeyUp (KeyCode.D)) {
+			if (m_TurnState == -1) {
+				m_Animator.SetTrigger ("ReleaseLeft");
+			} else {
+				m_Animator.SetTrigger ("ReleaseRight"); 
+			}
 			m_TurnState = 0;
 		}
 
@@ -89,6 +106,6 @@ public class BasicMovementScript : MonoBehaviour {
 			break;
 		}
 	
-		gameObject.transform.rotation = Quaternion.Slerp (gameObject.transform.rotation, targetRotation, Time.deltaTime * RotationDamping);
+		//gameObject.transform.rotation = Quaternion.Lerp (gameObject.transform.rotation, targetRotation, Time.deltaTime * RotationDamping);
 	}
 }
