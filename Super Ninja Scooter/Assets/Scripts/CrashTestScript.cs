@@ -9,7 +9,7 @@ public class CrashTestScript : MonoBehaviour {
 	[SerializeField] AudioSource CrashSound;
 	[SerializeField] AudioMixerSnapshot DefaultSnapshot;
 	[SerializeField] AudioMixerSnapshot DeadSnapshot;
-
+    [SerializeField] GameObject Player;
 	// Use this for initialization
 	void Start () {
 		DefaultSnapshot.TransitionTo (0f);
@@ -17,9 +17,6 @@ public class CrashTestScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.LeftControl)) {
-			Crash ();
-		}
 	}
 
 	void FixedUpdate(){
@@ -30,11 +27,11 @@ public class CrashTestScript : MonoBehaviour {
 		SceneManager.LoadScene ("TestDriveScene");
 	}
 
-	void OnCollisionEnter(Collision collision){
-		
+	void OnTriggerEnter(Collider other){
+        Crash();
 	}
 
-	void Crash(){
+	public void Crash(){
 		gameObject.SetActive (false);
 		Ragdoll.SetActive (true);
 		Ragdoll.GetComponentInChildren<Rigidbody> ().AddForce (new Vector3 (0, 5000f, 5000f));
