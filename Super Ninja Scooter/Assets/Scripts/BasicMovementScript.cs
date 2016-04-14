@@ -12,6 +12,8 @@ public class BasicMovementScript : MonoBehaviour {
 	[SerializeField] GameObject RightGameObjectTarget;
 	[SerializeField] GameObject ZeroPointTarget;
 
+	[SerializeField] GameObject MovingObjects;
+
 	[SerializeField] Transform MoverNode;
 
 	[SerializeField] Animator m_Animator;
@@ -41,13 +43,6 @@ public class BasicMovementScript : MonoBehaviour {
 
 		}
 
-		if (Input.GetKey (KeyCode.W)) {
-			rev = true;
-			if (m_EngineSound.pitch < 1.31f) {
-				m_EngineSound.pitch += 0.005f;
-			}
-		}
-
 		if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)) {
 			if (m_TurnState == -1) {
 				m_Animator.SetTrigger ("TurnLeft");
@@ -66,45 +61,39 @@ public class BasicMovementScript : MonoBehaviour {
 			m_TurnState = 0;
 		}
 
-		if (Input.GetKeyUp (KeyCode.W)) {
-			rev = false;
-		}
-
-		if (rev == false && m_EngineSound.pitch > .3f) {
-			m_EngineSound.pitch -= 0.01f;
-		}
+		m_EngineSound.pitch = .3f + MovingObjects.GetComponent<TextTutorialTranslator>().moveSpeed * 0.07f;
 			
 	}
 
 	// Updates at physics rate, 30fps
-	void FixedUpdate(){
-
-		Vector3 currentUp;
-
-		RaycastHit hit;
-		if (Physics.Raycast(transform.position, -Vector3.up, out hit, 100)){
-			currentUp = hit.normal;
-		}
-
-		switch (m_TurnState) {
-		case -1:
-			targetRotation = Quaternion.LookRotation (Vector3.forward, LeftGameObjectTarget.transform.position);
-			Debug.Log ("lel");
-			break;
-		
-		case 0:
-			targetRotation = Quaternion.LookRotation (Vector3.forward, ZeroPointTarget.transform.up);
-			break;
-
-		case 1:
-			targetRotation = Quaternion.LookRotation (Vector3.forward, RightGameObjectTarget.transform.position);
-			Debug.Log ("lol");
-			break;
-
-		default:
-			break;
-		}
-	
-		//gameObject.transform.rotation = Quaternion.Lerp (gameObject.transform.rotation, targetRotation, Time.deltaTime * RotationDamping);
-	}
+//	void FixedUpdate(){
+//
+////		Vector3 currentUp;
+//
+////		RaycastHit hit;
+////		if (Physics.Raycast(transform.position, -Vector3.up, out hit, 100)){
+////			currentUp = hit.normal;
+////		}
+////
+////		switch (m_TurnState) {
+////		case -1:
+////			targetRotation = Quaternion.LookRotation (Vector3.forward, LeftGameObjectTarget.transform.position);
+////			Debug.Log ("lel");
+////			break;
+////		
+////		case 0:
+////			targetRotation = Quaternion.LookRotation (Vector3.forward, ZeroPointTarget.transform.up);
+////			break;
+////
+////		case 1:
+////			targetRotation = Quaternion.LookRotation (Vector3.forward, RightGameObjectTarget.transform.position);
+////			Debug.Log ("lol");
+////			break;
+////
+////		default:
+////			break;
+////		}
+//	
+//		//gameObject.transform.rotation = Quaternion.Lerp (gameObject.transform.rotation, targetRotation, Time.deltaTime * RotationDamping);
+//	}
 }

@@ -5,6 +5,7 @@ using UnityEngine.Audio;
 
 public class CrashTestScript : MonoBehaviour {
 
+	[SerializeField] GameObject PlayerObject;
 	[SerializeField] GameObject Ragdoll;
 	[SerializeField] AudioSource CrashSound;
 	[SerializeField] AudioMixerSnapshot DefaultSnapshot;
@@ -16,11 +17,11 @@ public class CrashTestScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (Input.GetKeyDown (KeyCode.LeftControl)) {
-			Crash ();
-		}
-	}
+//	void Update () {
+//		if (Input.GetKeyDown (KeyCode.LeftControl)) {
+//			Crash ();
+//		}
+//	}
 
 	void FixedUpdate(){
 		Ragdoll.transform.position = new Vector3(GameObject.Find ("MoverNode").transform.position.x, 0,0);
@@ -30,12 +31,15 @@ public class CrashTestScript : MonoBehaviour {
 		SceneManager.LoadScene ("TestDriveScene");
 	}
 
-	void OnCollisionEnter(Collision collision){
-		
+	void OnTriggerEnter(Collider collision){
+		Debug.Log ("I hit a thing!");
+		if (collision.tag == "KillObject") {
+			Crash ();
+		}
 	}
 
 	void Crash(){
-		gameObject.SetActive (false);
+		PlayerObject.SetActive (false);
 		Ragdoll.SetActive (true);
 		Ragdoll.GetComponentInChildren<Rigidbody> ().AddForce (new Vector3 (0, 5000f, 5000f));
 		CrashSound.Play ();
