@@ -79,7 +79,6 @@ public class BasicMovementScript : MonoBehaviour {
 	// Updates at physics rate, 30fps
 	void FixedUpdate(){
 
-
 		Vector3 currentUp;
 
 		RaycastHit hit;

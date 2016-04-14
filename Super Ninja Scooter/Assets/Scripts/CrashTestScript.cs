@@ -18,12 +18,7 @@ public class CrashTestScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.LeftControl)) {
-			gameObject.SetActive (false);
-			Ragdoll.SetActive (true);
-			Ragdoll.GetComponentInChildren<Rigidbody> ().AddForce (new Vector3 (0, 5000f, 5000f));
-			CrashSound.Play ();
-			DeadSnapshot.TransitionTo (3f);
-			Invoke ("Restart", 5);
+			Crash ();
 		}
 	}
 
@@ -33,5 +28,18 @@ public class CrashTestScript : MonoBehaviour {
 
 	void Restart(){
 		SceneManager.LoadScene ("TestDriveScene");
+	}
+
+	void OnCollisionEnter(Collision collision){
+		
+	}
+
+	void Crash(){
+		gameObject.SetActive (false);
+		Ragdoll.SetActive (true);
+		Ragdoll.GetComponentInChildren<Rigidbody> ().AddForce (new Vector3 (0, 5000f, 5000f));
+		CrashSound.Play ();
+		DeadSnapshot.TransitionTo (3f);
+		Invoke ("Restart", 5);
 	}
 }
